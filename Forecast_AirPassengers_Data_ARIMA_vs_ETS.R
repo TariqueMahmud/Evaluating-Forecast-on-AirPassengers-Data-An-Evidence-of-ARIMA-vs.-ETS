@@ -105,6 +105,43 @@ ggtsdiag(arimaAP)
 forecastAP <- forecast(arimaAP, level = c(95), h = 36)
 autoplot(forecastAP)
 
+library(forecast)
+## Warning: package 'forecast' was built under R version 3.5.3
+library(readr)
+## Warning: package 'readr' was built under R version 3.5.3
+library(data.table)
+## Warning: package 'data.table' was built under R version 3.5.3
+library(fpp2)
+## Warning: package 'fpp2' was built under R version 3.5.3
+
+data(AirPassengers)
+AP <- AirPassengers
+AP
+
+
+#Import Data, then create test and training sets
+unemp = ts(AP, start = c(1949, 12), end = c(1960, 12), frequency = 12)
+
+train = window(unemp, end = c(1960, 12))
+test = window(unemp, start = c(1949, 12))
+#Forecasts
+arimafc <- train %>% auto.arima() %>% forecast(h=6)
+etsfc <- train %>% ets() %>% forecast(h=6)
+
+autoplot(arimafc)
+
+
+autoplot(etsfc)
+
+
+#Validation Testing
+arimamse = mean((test-arimafc$mean)^2)
+etsmse = mean((test-etsfc$mean)^2)
+c(arimamse, etsmse)
+
+summary(arimafc)
+
+summary(etsfc)
 
 
 

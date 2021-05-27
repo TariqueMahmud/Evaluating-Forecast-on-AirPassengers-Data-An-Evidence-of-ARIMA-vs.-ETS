@@ -106,8 +106,5 @@ forecastAP <- forecast(arimaAP, level = c(95), h = 36)
 autoplot(forecastAP)
 
 
-################################################################
-
-
 
 
